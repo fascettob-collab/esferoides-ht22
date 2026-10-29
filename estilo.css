@@ -17,9 +17,10 @@
   --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; background: var(--fondo); }
-/* el cuerpo queda fijo al tamaño de la pantalla: nada se desliza ni rebota */
-body { position: fixed; inset: 0; background: var(--fondo); color: var(--texto); font: 400 14px/1.5 var(--mono); }
+/* body del alto visible real (100dvh): en iPhone, con la barra de Safari achicada, no queda franja sin pintar */
+html { height: 100%; overflow: hidden; overscroll-behavior: none; background: var(--fondo); }
+body { margin: 0; height: 100%; height: 100dvh; overflow: hidden; overscroll-behavior: none; }
+body { background: var(--fondo); color: var(--texto); font: 400 14px/1.5 var(--mono); }
 a { color: inherit; text-decoration: none; }
 [hidden] { display: none !important; }
 
