@@ -3,34 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Esferoides HT22 · Grupo 8</title>
-<meta name="description" content="Modelo 3D e informe del TP de esferoides HT22 transfectados con M6a-GFP. Biología Celular, Grupo 8.">
+<title>Esferoides HT22 · Grupo 8 · UNSAM</title>
+<meta name="description" content="M6a-GFP en esferoides de células HT22: modelo 3D confocal, informe e integrantes del Grupo 8 de Biología Celular (EByN, UNSAM).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="estilo.css">
 </head>
-<body class="portada">
-<main>
-  <p class="etiqueta">Biología Celular · Grupo 8 · Turno tarde</p>
-  <h1>Esferoides de células HT22 transfectadas con <span class="t-gfp">M6a-GFP</span></h1>
-  <p class="sub">Reconstrucción 3D confocal: <span class="t-wga">WGA</span> membranas · <span class="t-gfp">M6a-GFP</span> · <span class="t-dapi">DAPI</span> núcleos</p>
-  <nav class="botones">
-    <a class="boton" href="modelo.html?v=40x">
-      <img src="img/vista_40x.jpg" alt="Proyección del esferoide a 40x">
-      <span class="txt"><b>Ver modelo 3D · 40x</b><small>Células dentro del esferoide</small></span>
-    </a>
-    <a class="boton" href="modelo.html?v=10x">
-      <img src="img/vista_10x.jpg" alt="Proyección del esferoide entero a 10x">
-      <span class="txt"><b>Ver modelo 3D · 10x</b><small>El esferoide entero</small></span>
-    </a>
-    <a class="boton informe" href="Informe_Esferoides_HT22_Grupo8.pdf">
-      <span class="icono">📄</span>
-      <span class="txt"><b>Ver el informe</b><small>Informe completo corregido (PDF)</small></span>
-    </a>
-    <a class="boton informe" href="integrantes.html">
-      <span class="icono">👥</span>
-      <span class="txt"><b>Ver integrantes</b><small>Grupo 8 · Turno tarde</small></span>
-    </a>
+<body>
+<main class="columna">
+  <div class="top"><img class="logo" src="img/unsam.png" alt="UNSAM"><span class="inst">EByN · UNSAM</span><span class="g8">GRUPO 8</span></div>
+  <p class="linea"><span class="pr">unsam@biocel</span>:<span class="gr">~/grupo8</span>$ ver stack --40x</p>
+  <div class="marco">
+    <pre id="ascii" aria-label="Esferoide a 40x dibujado con caracteres, plano por plano"></pre>
+    <div class="lect"><span>40x</span><span class="barra-z"><i id="punto"></i></span><span id="zval">z = 0 µm</span></div>
+  </div>
+  <h1><span class="t-gfp">M6a-GFP</span> en esferoides de células HT22: el entorno 3D reduce el tamaño celular y las protrusiones</h1>
+  <p class="linea"><span class="pr">unsam@biocel</span>:<span class="gr">~/grupo8</span>$ elegí una opción <span class="cursor"></span></p>
+  <nav class="acc" aria-label="Opciones">
+    <a class="btn btn--p" href="modelo.html?v=40x">[ ver modelo 3D ]</a>
+    <a class="btn" href="Informe_Esferoides_HT22_Grupo8.pdf">[ informe ]</a>
+    <a class="btn ancho" href="integrantes.html">[ integrantes ]</a>
   </nav>
 </main>
-<footer>EByN · UNSAM · 2026</footer>
+<script src="planos_z.js"></script>
+<script>
+// El dibujo recorre los planos del stack, ida y vuelta
+(() => {
+  const P = window.PLANOS_Z, pre = document.getElementById('ascii'), zv = document.getElementById('zval'), pt = document.getElementById('punto');
+  let i = 0, d = 1;
+  const ver = () => { pre.innerHTML = P[i]; zv.textContent = 'z = ' + (i * 2) + ' µm'; pt.style.left = 'calc(' + (i / (P.length - 1) * 100) + '% - 3px)'; };
+  ver();
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  setInterval(() => { if (i + d < 0 || i + d >= P.length) d = -d; i += d; ver(); }, 400);
+})();
+</script>
 </body>
 </html>

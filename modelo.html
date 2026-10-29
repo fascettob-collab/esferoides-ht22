@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Modelo 3D · Esferoide HT22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="estilo.css">
 <script type="importmap">
 { "imports": {
@@ -13,48 +16,63 @@
 </script>
 </head>
 <body class="visor">
-<header class="barra">
-  <a class="volver" href="./">‹ Inicio</a>
-  <div class="selector" role="tablist">
+<header class="top">
+  <a class="volver" href="./">‹ inicio</a>
+  <nav class="pestanas" aria-label="Aumento">
     <a data-v="40x" href="?v=40x">40x</a>
     <a data-v="10x" href="?v=10x">10x</a>
-  </div>
+  </nav>
 </header>
 
-<div id="lienzo"></div>
-<div id="cargando">Cargando modelo…<span id="progreso"></span></div>
+<div class="cuerpo" id="cuerpo">
+  <div class="vista">
+    <div id="lienzo"></div>
+    <span class="esq a" id="esq-a"></span><span class="esq b">arrastrá para girar</span><span class="esq d" id="medidas"></span>
+    <div class="plegado" id="plegado" hidden>
+      <span class="chips"><span class="t-wga" data-chip="wga">WGA</span><span class="t-gfp" data-chip="gfp">GFP</span><span class="t-dapi" data-chip="dapi">DAPI</span></span>
+      <button class="btn btn--chico" id="mostrar" type="button">[ controles ]</button>
+    </div>
+    <div id="cargando" role="status" aria-live="polite">
+      <p><span class="pr">unsam@biocel</span>:<span class="gr">~/grupo8</span>$ ver modelo --<span id="cmd-v"></span></p>
+      <div id="log"></div>
+      <p class="progreso" id="barra-carga">[----------------------]    0 %</p>
+      <p class="dim" id="pista">con datos móviles puede tardar unos segundos</p>
+    </div>
+  </div>
 
-<aside class="panel" id="panel">
-  <h1 id="titulo">Esferoide transfectado</h1>
-  <p class="medidas" id="medidas"></p>
-  <div class="canal" data-c="wga">
-    <label><input type="checkbox" checked> <span class="pt wga"></span><b class="t-wga">WGA</b> membranas</label>
-    <input type="range" min="0.2" max="4" step="0.05" value="1" aria-label="Brillo WGA">
-  </div>
-  <div class="canal" data-c="gfp">
-    <label><input type="checkbox" checked> <span class="pt gfp"></span><b class="t-gfp">M6a-GFP</b> células transfectadas</label>
-    <input type="range" min="0.2" max="4" step="0.05" value="1.2" aria-label="Brillo GFP">
-  </div>
-  <div class="canal" data-c="dapi">
-    <label><input type="checkbox"> <span class="pt dapi"></span><b class="t-dapi">DAPI</b> núcleos</label>
-    <input type="range" min="0.2" max="4" step="0.05" value="1" aria-label="Brillo DAPI">
-  </div>
-  <div class="fila">
-    <label class="chico">Modo
-      <select id="modo">
-        <option value="0">Proyección de máxima intensidad</option>
-        <option value="1">Volumen translúcido</option>
-      </select>
-    </label>
-  </div>
-  <div class="fila">
-    <label class="chico"><input type="checkbox" id="caja"> Mostrar caja</label>
-    <label class="chico"><input type="checkbox" id="girar" checked> Girar solo</label>
-    <button id="reset" type="button">Vista inicial</button>
-  </div>
-  <p class="ayuda">Arrastrá para girar · pellizcá o usá la rueda para el zoom · dos dedos o clic derecho para mover.</p>
-</aside>
-<button class="plegar" id="plegar" type="button" aria-label="Mostrar u ocultar controles">☰</button>
+  <aside class="panel" id="panel" aria-label="Controles">
+    <h2>Canales</h2>
+    <div class="canal" data-c="wga">
+      <label class="check"><input type="checkbox" checked><span class="caja-x">[x]</span><b class="nombre t-wga">WGA</b></label>
+      <span class="nota">membranas</span>
+      <input type="range" min="0.2" max="4" step="0.05" value="1" aria-label="Brillo WGA">
+    </div>
+    <div class="canal" data-c="gfp">
+      <label class="check"><input type="checkbox" checked><span class="caja-x">[x]</span><b class="nombre t-gfp">M6a-GFP</b></label>
+      <span class="nota">transfectadas</span>
+      <input type="range" min="0.2" max="4" step="0.05" value="1.2" aria-label="Brillo GFP">
+    </div>
+    <div class="canal" data-c="dapi">
+      <label class="check"><input type="checkbox"><span class="caja-x">[ ]</span><b class="nombre t-dapi">DAPI</b></label>
+      <span class="nota">núcleos</span>
+      <input type="range" min="0.2" max="4" step="0.05" value="1" aria-label="Brillo DAPI">
+    </div>
+    <h2>Vista</h2>
+    <div class="ops" role="radiogroup" aria-label="Modo">
+      <label class="check"><input type="radio" name="modo" value="0" checked><span class="caja-x">(•)</span>máxima intensidad</label>
+      <label class="check"><input type="radio" name="modo" value="1"><span class="caja-x">( )</span>translúcido</label>
+    </div>
+    <div class="ops">
+      <label class="check"><input type="checkbox" id="girar" checked><span class="caja-x">[x]</span>girar solo</label>
+      <label class="check"><input type="checkbox" id="caja"><span class="caja-x">[ ]</span>caja</label>
+    </div>
+    <div class="pie">
+      <button class="btn btn--chico" id="reset" type="button">[ vista inicial ]</button>
+      <button class="btn btn--chico" id="ocultar" type="button">[ ocultar ]</button>
+    </div>
+    <p class="ayuda">Arrastrá para girar · pellizcá o usá la rueda para el zoom · dos dedos o clic derecho para mover. La barra blanca mide 50 µm.</p>
+  </aside>
+</div>
 
 <script type="module">
 import * as THREE from 'three';
@@ -62,18 +80,41 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const params = new URLSearchParams(location.search);
 const vid = params.get('v') === '10x' ? '10x' : '40x';
-document.querySelectorAll('.selector a').forEach(a => a.classList.toggle('activo', a.dataset.v === vid));
+document.querySelectorAll('.pestanas a').forEach(a => { if (a.dataset.v === vid) a.setAttribute('aria-current', 'page'); });
+document.getElementById('cmd-v').textContent = vid;
+document.getElementById('esq-a').textContent = vid + (vid === '40x' ? ' · células dentro del esferoide' : ' · esferoide entero');
 
 const info = (await (await fetch('data/volumenes.json')).json())[vid];
 const [nx, ny, nz] = info.dims;
 const fis = [nx * info.um_px, ny * info.um_px, nz * info.um_z];
-document.getElementById('titulo').textContent = info.titulo;
-document.getElementById('medidas').textContent =
-  `Caja: ${fis[0].toFixed(0)} × ${fis[1].toFixed(0)} × ${fis[2].toFixed(0)} µm · ${nz} planos confocales cada ${info.um_z} µm · barra blanca: 50 µm`;
+document.getElementById('medidas').textContent = `${fis[0].toFixed(0)} × ${fis[1].toFixed(0)} × ${fis[2].toFixed(0)} µm · ${nz} planos cada ${info.um_z} µm`;
 document.title = `Modelo 3D ${vid} · Esferoide HT22`;
 
-// --- descarga y descompresión de los tres canales ---
-const prog = document.getElementById('progreso');
+// --- descarga y descompresión de los tres canales, con progreso real en bytes ---
+const log = document.getElementById('log'), barraCarga = document.getElementById('barra-carga');
+const ANCHO = 22;
+function pintarBarra(f) {
+  f = Math.min(1, Math.max(0, f));
+  const n = Math.round(f * ANCHO);
+  barraCarga.textContent = '[' + '#'.repeat(n) + '-'.repeat(ANCHO - n) + ']  ' + String(Math.floor(f * 100)).padStart(3) + ' %';
+}
+async function bajar(url, alAvanzar) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${url}: ${r.status}`);
+  const total = +r.headers.get('content-length') || 0;
+  if (!r.body || !r.body.getReader) { const b = await r.arrayBuffer(); alAvanzar(b.byteLength, b.byteLength); return b; }
+  const lector = r.body.getReader(), partes = [];
+  let recibidos = 0;
+  for (;;) {
+    const { done, value } = await lector.read();
+    if (done) break;
+    partes.push(value); recibidos += value.length;
+    alAvanzar(recibidos, total);
+  }
+  const todo = new Uint8Array(recibidos);
+  let o = 0; for (const p of partes) { todo.set(p, o); o += p.length; }
+  return todo.buffer;
+}
 async function gunzip(buf) {
   if ('DecompressionStream' in window) {
     const s = new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'));
@@ -82,14 +123,40 @@ async function gunzip(buf) {
   const { gunzipSync } = await import('https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js');
   return gunzipSync(new Uint8Array(buf));
 }
-let listos = 0;
 const orden = ['wga', 'gfp', 'dapi'];  // R, G, B de la textura
-const canales = await Promise.all(orden.map(async c => {
-  const r = await fetch('data/' + info.canales[c]);
-  const d = await gunzip(await r.arrayBuffer());
-  prog.textContent = ` ${++listos}/3`;
-  return d;
-}));
+const estado = {};
+for (const c of orden) {
+  log.insertAdjacentHTML('beforeend', `<p><span class="dim">bajando</span> ${info.canales[c].padEnd(16)} <span id="st-${c}" class="dim">…</span></p>`);
+  estado[c] = { rec: 0, total: 0 };
+}
+function avance() {
+  const vals = Object.values(estado);
+  if (vals.some(v => !v.total)) {  // sin tamaño todavía: cuenta por archivo terminado
+    pintarBarra(vals.filter(v => v.listo).length / vals.length); return;
+  }
+  pintarBarra(vals.reduce((s, v) => s + v.rec, 0) / vals.reduce((s, v) => s + v.total, 0));
+}
+let canales;
+try {
+  canales = await Promise.all(orden.map(async c => {
+    const st = document.getElementById('st-' + c);
+    const buf = await bajar('data/' + info.canales[c], (rec, total) => {
+      estado[c].rec = rec; estado[c].total = total;
+      if (total) st.textContent = Math.floor(rec / total * 100) + ' %';
+      avance();
+    });
+    estado[c].listo = true; estado[c].rec = estado[c].total = estado[c].total || buf.byteLength;
+    st.textContent = 'listo'; st.className = 'ok';
+    avance();
+    return gunzip(buf);
+  }));
+} catch (e) {
+  log.insertAdjacentHTML('beforeend', `<p class="error">no se pudo bajar el modelo (${e.message}). Revisá la conexión y recargá la página.</p>`);
+  throw e;
+}
+pintarBarra(1);
+log.insertAdjacentHTML('beforeend', `<p class="dim">armando volumen ${nx} × ${ny} × ${nz} planos</p>`);
+await new Promise(r => requestAnimationFrame(() => setTimeout(r, 30)));
 const n = nx * ny * nz;
 const rgba = new Uint8Array(n * 4);
 for (let i = 0; i < n; i++) {
@@ -207,22 +274,31 @@ vistaInicial();
 // --- controles de la interfaz ---
 const indice = { wga: 0, gfp: 1, dapi: 2 };
 const eje = ['x', 'y', 'z'];
+// casillas estilo consola: [x] / [ ] y (•) / ( )
+function marcar(inp) {
+  document.querySelectorAll(`input[name="${inp.name}"]`).forEach(r => { if (r.type === 'radio') r.nextElementSibling.textContent = r.checked ? '(•)' : '( )'; });
+  if (inp.type === 'checkbox') inp.nextElementSibling.textContent = inp.checked ? '[x]' : '[ ]';
+}
+document.querySelectorAll('.check input').forEach(inp => inp.addEventListener('change', () => marcar(inp)));
 document.querySelectorAll('.canal').forEach(div => {
   const k = eje[indice[div.dataset.c]];
   const chk = div.querySelector('input[type=checkbox]'), rng = div.querySelector('input[type=range]');
+  const chip = document.querySelector(`[data-chip="${div.dataset.c}"]`);
   const sync = () => {
     uniforms.uVisible.value[k] = chk.checked ? 1 : 0;
     uniforms.uGanancia.value[k] = parseFloat(rng.value);
     div.classList.toggle('apagado', !chk.checked);
+    chip.classList.toggle('off', !chk.checked);
   };
   chk.addEventListener('change', sync); rng.addEventListener('input', sync); sync();
 });
-document.getElementById('modo').addEventListener('change', e => uniforms.uModo.value = +e.target.value);
+document.querySelectorAll('input[name="modo"]').forEach(r => r.addEventListener('change', () => { if (r.checked) uniforms.uModo.value = +r.value; }));
 document.getElementById('caja').addEventListener('change', e => { caja.visible = e.target.checked; });
 document.getElementById('girar').addEventListener('change', e => controles.autoRotate = e.target.checked);
 document.getElementById('reset').addEventListener('click', vistaInicial);
-document.getElementById('plegar').addEventListener('click', () => document.getElementById('panel').classList.toggle('oculto'));
-if (innerWidth < 700) document.getElementById('panel').classList.add('oculto');
+const cuerpo = document.getElementById('cuerpo'), plegado = document.getElementById('plegado');
+document.getElementById('ocultar').addEventListener('click', () => { cuerpo.classList.add('sin-panel'); plegado.hidden = false; });
+document.getElementById('mostrar').addEventListener('click', () => { cuerpo.classList.remove('sin-panel'); plegado.hidden = true; });
 
 document.getElementById('cargando').remove();
 renderer.setAnimationLoop(() => { controles.update(); renderer.render(escena, camara); });

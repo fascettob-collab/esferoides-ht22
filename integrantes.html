@@ -3,27 +3,69 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Integrantes · Esferoides HT22</title>
+<title>Integrantes · Esferoides HT22 · Grupo 8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="estilo.css">
-<style>
-  .lista { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 10px; text-align: left; }
-  .lista li { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 14px 18px; font-size: 18px; font-weight: 600; }
-  .volver-inicio { display: inline-block; text-decoration: none; padding: 10px 16px; border-radius: 12px; background: var(--tarjeta); border: 1px solid var(--borde); font-weight: 600; }
-</style>
 </head>
-<body class="portada">
-<main>
-  <p class="etiqueta">Biología Celular · Grupo 8 · Turno tarde</p>
-  <h1>Integrantes</h1>
-  <p class="sub">Escuela de Bio y Nanotecnologías (EByN), Universidad Nacional de San Martín</p>
-  <ul class="lista">
-    <li>Nahuel Bonomo</li>
-    <li>Bautista Fascetto</li>
-    <li>Mauro Lucero</li>
-    <li>Donato Cavagnaro Rago</li>
-  </ul>
-  <a class="volver-inicio" href="./">‹ Volver al inicio</a>
+<body>
+<main class="columna">
+  <div class="top"><a class="volver" href="./">‹ inicio</a><span class="g8">GRUPO 8</span></div>
+  <p class="linea"><span class="pr">unsam@biocel</span>:<span class="gr">~/grupo8</span>$ ls integrantes/</p>
+  <div class="gente" id="gente"></div>
+  <p class="linea"><span class="pr">unsam@biocel</span>:<span class="gr">~/grupo8</span>$ cat datos.txt</p>
+  <dl class="datos">
+    <dt>grupo</dt><dd class="gr">Grupo 8 · turno tarde</dd>
+    <dt>materia</dt><dd>Biología Celular, 2.º cuatrimestre 2026</dd>
+    <dt>lugar</dt><dd>Escuela de Bio y Nanotecnologías, UNSAM</dd>
+    <dt>trabajo</dt><dd>Esferoides HT22 · <span class="t-gfp">M6a-GFP</span></dd>
+  </dl>
+  <div class="acc"><a class="btn ancho" href="./">[ ‹ volver al inicio ]</a></div>
 </main>
-<footer>EByN · UNSAM · 2026</footer>
+<script>
+// Para sumar datos de alguien: completá sus campos. foto, cv y linkedin son rutas o links
+// (por ejemplo foto: 'img/integrantes/bonomo.jpg', cv: 'cv/bonomo.pdf').
+// Quien tenga al menos un dato se puede desplegar.
+const INTEGRANTES = [
+  { nombre: 'Nahuel Bonomo',         foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
+  { nombre: 'Bautista Fascetto',     foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
+  { nombre: 'Mauro Lucero',          foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
+  { nombre: 'Donato Cavagnaro Rago', foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
+];
+const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const iniciales = n => n.split(' ').slice(0, 2).map(p => p[0]).join('');
+const lista = document.getElementById('gente');
+INTEGRANTES.forEach((p, i) => {
+  const foto = p.foto ? `<img class="foto" src="${esc(p.foto)}" alt="">` : `<span class="foto" aria-hidden="true">${iniciales(p.nombre)}</span>`;
+  const tieneDatos = p.descripcion || p.mail || p.cv || p.linkedin;
+  if (!tieneDatos) {
+    lista.insertAdjacentHTML('beforeend', `<div class="persona"><div class="fila-p">${foto}<b>${esc(p.nombre)}</b><span></span></div></div>`);
+    return;
+  }
+  const archivo = p.nombre.split(' ').slice(-1)[0].toLowerCase();
+  lista.insertAdjacentHTML('beforeend', `
+    <details class="persona" name="gente">
+      <summary class="fila-p">${foto}<b>${esc(p.nombre)}</b><span class="flecha" aria-hidden="true">›</span></summary>
+      <div class="ficha">
+        <p class="linea"><span class="pr">$</span> cat ${esc(archivo)}.txt</p>
+        ${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ''}
+        ${p.mail ? `<div class="mail"><span class="dim">mail</span><span class="dir">${esc(p.mail)}</span><button class="btn btn--chico copiar" type="button">[ copiar ]</button></div>` : ''}
+        ${p.cv || p.linkedin ? `<div class="enlaces">
+          ${p.cv ? `<a class="btn btn--chico" href="${esc(p.cv)}" target="_blank" rel="noopener">[ ver CV ]</a>` : ''}
+          ${p.linkedin ? `<a class="btn btn--chico" href="${esc(p.linkedin)}" target="_blank" rel="noopener">[ LinkedIn ]</a>` : ''}
+        </div>` : ''}
+      </div>
+    </details>`);
+});
+lista.addEventListener('click', e => {
+  const b = e.target.closest('.copiar'); if (!b) return;
+  const dir = b.previousElementSibling;
+  const ok = () => { b.textContent = '[ copiado ]'; setTimeout(() => b.textContent = '[ copiar ]', 1500); };
+  (navigator.clipboard ? navigator.clipboard.writeText(dir.textContent) : Promise.reject()).then(ok).catch(() => {
+    const r = document.createRange(); r.selectNodeContents(dir); const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  });
+});
+</script>
 </body>
 </html>
