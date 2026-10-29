@@ -29,11 +29,11 @@
   <p class="medidas" id="medidas"></p>
   <div class="canal" data-c="wga">
     <label><input type="checkbox" checked> <span class="pt wga"></span><b class="t-wga">WGA</b> membranas</label>
-    <input type="range" min="0.2" max="4" step="0.05" value="0.8" aria-label="Brillo WGA">
+    <input type="range" min="0.2" max="4" step="0.05" value="1" aria-label="Brillo WGA">
   </div>
   <div class="canal" data-c="gfp">
     <label><input type="checkbox" checked> <span class="pt gfp"></span><b class="t-gfp">M6a-GFP</b> células transfectadas</label>
-    <input type="range" min="0.2" max="4" step="0.05" value="1.3" aria-label="Brillo GFP">
+    <input type="range" min="0.2" max="4" step="0.05" value="1.2" aria-label="Brillo GFP">
   </div>
   <div class="canal" data-c="dapi">
     <label><input type="checkbox"> <span class="pt dapi"></span><b class="t-dapi">DAPI</b> núcleos</label>
@@ -158,7 +158,7 @@ const frag = /* glsl */`
   }`;
 const uniforms = {
   uVol: { value: tex },
-  uGanancia: { value: new THREE.Vector3(0.8, 1.3, 1) },
+  uGanancia: { value: new THREE.Vector3(1, 1.2, 1) },
   uVisible: { value: new THREE.Vector3(1, 1, 0) },
   uModo: { value: 0 },
   uPasos: { value: Math.max(nx, ny, nz) * 1.2 },
@@ -185,7 +185,9 @@ escena.add(barra);
 function vistaInicial() {
   // distancia para que el modelo entre entero también en pantallas angostas (celular)
   const d = 0.62 / Math.tan(THREE.MathUtils.degToRad(camara.fov / 2)) * Math.max(1, 1 / camara.aspect);
-  camara.position.set(0.55, -0.9, 1.5).normalize().multiplyScalar(d);
+  // el 10x tiene poca resolución en z (planos cada 2 µm): arranca casi de frente, como en el microscopio
+  const dir = vid === '10x' ? [0.08, -0.12, 1.5] : [0.3, -0.45, 1.5];
+  camara.position.set(...dir).normalize().multiplyScalar(d);
   camara.up.set(0, 1, 0);
   controles.target.set(0, 0, 0);
   controles.update();
