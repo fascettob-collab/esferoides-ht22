@@ -17,13 +17,14 @@
   --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; }
-body { background: var(--fondo); color: var(--texto); font: 400 14px/1.5 var(--mono); }
+html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; background: var(--fondo); }
+/* el cuerpo queda fijo al tamaño de la pantalla: nada se desliza ni rebota */
+body { position: fixed; inset: 0; background: var(--fondo); color: var(--texto); font: 400 14px/1.5 var(--mono); }
 a { color: inherit; text-decoration: none; }
 [hidden] { display: none !important; }
 
 /* ---------- piezas comunes ---------- */
-.top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.top { flex: none; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .top .logo { height: 32px; width: auto; }
 .top .inst { font-size: 11px; color: var(--tenue); letter-spacing: .08em; text-transform: uppercase; margin-right: auto; }
 .g8 { font: 700 12px/1 var(--mono); letter-spacing: .12em; color: var(--rojo); border: 1px solid var(--rojo); padding: 6px 8px; box-shadow: 0 0 10px rgba(255,59,74,.35) inset; white-space: nowrap; }
@@ -35,28 +36,28 @@ a { color: inherit; text-decoration: none; }
 .volver { font-weight: 600; color: var(--azul); padding: 8px 0; }
 .volver:focus-visible { outline: 1px solid var(--azul); }
 
-.btn { min-height: 52px; display: grid; place-items: center; text-align: center; font: 600 clamp(13px, 3.6vw, 15px)/1.2 var(--mono); border: 1px dashed #2f4f8f; color: var(--texto); background: transparent; cursor: pointer; padding: 0 8px; }
+.btn { min-height: clamp(42px, 6.4vh, 52px); display: grid; place-items: center; text-align: center; font: 600 clamp(13px, 3.6vw, 15px)/1.2 var(--mono); border: 1px dashed #2f4f8f; color: var(--texto); background: transparent; cursor: pointer; padding: 0 8px; }
 .btn:hover, .btn:focus-visible { border-style: solid; border-color: var(--azul); outline: none; }
 .btn--p { background: var(--azul); color: var(--fondo); border: 1px solid var(--azul); box-shadow: 0 0 18px rgba(77,163,255,.4); }
 .btn--p:hover, .btn--p:focus-visible { background: var(--azul-claro); border-color: var(--azul-claro); }
 .btn--chico { min-height: 38px; font-size: 13px; }
 
 /* ---------- portada e integrantes: columna angosta, como en el celular ---------- */
-.columna { min-height: 100%; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px;
+.columna { height: 100%; gap: clamp(8px, 1.7vh, 14px); overflow-y: auto; overscroll-behavior: contain; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column;
   padding: max(18px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
-.columna h1 { margin: 0; font: 600 clamp(16px, 4.4vw, 21px)/1.4 var(--mono); color: var(--blanco); text-wrap: pretty; }
-.acc { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; }
+.columna h1 { margin: 0; font: 600 clamp(14px, min(4.4vw, 2.6vh), 21px)/1.4 var(--mono); color: var(--blanco); text-wrap: pretty; }
+.acc { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; flex: none; }
 .acc .ancho { grid-column: 1 / -1; }
 
-.marco { position: relative; border: 1px solid var(--borde); background: var(--panel); padding: 10px 0 28px; box-shadow: 0 0 24px rgba(77,163,255,.15) inset; overflow: hidden; }
-.marco pre { margin: 0 auto; width: fit-content; font: 600 clamp(8.5px, 2.75vw, 13px)/1.12 var(--mono); letter-spacing: .02em; min-height: calc(24 * 1.12em); }
+.marco { flex: 1 1 0; min-height: 110px; display: flex; align-items: center; justify-content: center; position: relative; border: 1px solid var(--borde); background: var(--panel); padding: 10px 0 28px; box-shadow: 0 0 24px rgba(77,163,255,.15) inset; overflow: hidden; }
+.marco pre { margin: 0; width: fit-content; font: 600 10px/1.12 var(--mono); letter-spacing: .02em; }
 pre .r { color: var(--wga); } pre .g { color: var(--gfp); } pre .b { color: var(--dapi); }
 .lect { position: absolute; left: 10px; right: 10px; bottom: 7px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--azul); }
 .barra-z { flex: 1; margin: 0 10px; height: 3px; background: #10244a; position: relative; }
 .barra-z i { position: absolute; top: -2px; width: 7px; height: 7px; background: var(--azul); box-shadow: 0 0 8px var(--azul); left: 0; transition: left 180ms; }
 
 /* integrantes */
-.gente { display: grid; border-top: 1px solid var(--borde); }
+.gente { display: grid; align-content: start; border-top: 1px solid var(--borde); flex: 0 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
 .persona { border-bottom: 1px solid var(--borde); }
 .persona .fila-p { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 11px 2px; list-style: none; }
 .persona summary { cursor: pointer; }
@@ -120,5 +121,12 @@ input[type=range]:focus-visible { outline: 1px solid var(--azul); outline-offset
   .cuerpo { grid-template-rows: 1fr; grid-template-columns: 1fr 340px; }
   .cuerpo.sin-panel { grid-template-columns: 1fr; }
   .panel { overflow: auto; }
+}
+/* celular acostado: el dibujo a la izquierda, título y botones a la derecha */
+@media (orientation: landscape) and (max-height: 560px) {
+  .portada { max-width: 900px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto 1fr auto auto auto; column-gap: 20px;
+    grid-template-areas: "top top" "l1 h1" "marco h1" "marco l2" "marco acc" "marco acc"; }
+  .portada > .top { grid-area: top; } .portada > .l1 { grid-area: l1; } .portada > .marco { grid-area: marco; min-height: 0; }
+  .portada > h1 { grid-area: h1; align-self: end; font-size: 16px; } .portada > .l2 { grid-area: l2; } .portada > .acc { grid-area: acc; }
 }
 @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }

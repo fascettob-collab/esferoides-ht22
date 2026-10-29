@@ -11,15 +11,15 @@
 <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-<main class="columna">
+<main class="columna portada">
   <div class="top"><img class="logo" src="img/unsam.png" alt="UNSAM"><span class="inst">EByN · UNSAM</span><span class="g8">GRUPO 8</span></div>
-  <p class="linea"><span class="pr">unsam@biocel</span>:<span class="gr">~/grupo8</span>$ ver stack --40x</p>
+  <p class="linea l1"><span class="pr">unsam@biocel</span>:<span class="gr">~/grupo8</span>$ ver stack --40x</p>
   <div class="marco">
     <pre id="ascii" aria-label="Esferoide a 40x dibujado con caracteres, plano por plano"></pre>
     <div class="lect"><span>40x</span><span class="barra-z"><i id="punto"></i></span><span id="zval">z = 0 µm</span></div>
   </div>
   <h1><span class="t-gfp">M6a-GFP</span> en esferoides de células HT22: el entorno 3D reduce el tamaño celular y las protrusiones</h1>
-  <p class="linea"><span class="pr">unsam@biocel</span>:<span class="gr">~/grupo8</span>$ elegí una opción <span class="cursor"></span></p>
+  <p class="linea l2"><span class="pr">unsam@biocel</span>:<span class="gr">~/grupo8</span>$ elegí una opción <span class="cursor"></span></p>
   <nav class="acc" aria-label="Opciones">
     <a class="btn btn--p" href="modelo.html?v=40x">[ ver modelo 3D ]</a>
     <a class="btn" href="Informe_Esferoides_HT22_Grupo8.pdf">[ informe ]</a>
@@ -32,8 +32,17 @@
 (() => {
   const P = window.PLANOS_Z, pre = document.getElementById('ascii'), zv = document.getElementById('zval'), pt = document.getElementById('punto');
   let i = 0, d = 1;
+  // el dibujo se ajusta al espacio libre del recuadro, sea cual sea el tamaño del celular
+  const marco = pre.parentElement;
+  const ajustar = () => {
+    pre.style.fontSize = '10px';
+    const w = pre.scrollWidth, h = pre.scrollHeight;
+    const libreW = marco.clientWidth - 20, libreH = marco.clientHeight - 40;
+    pre.style.fontSize = Math.max(4, Math.min(14, 10 * Math.min(libreW / w, libreH / h))) + 'px';
+  };
   const ver = () => { pre.innerHTML = P[i]; zv.textContent = 'z = ' + (i * 2) + ' µm'; pt.style.left = 'calc(' + (i / (P.length - 1) * 100) + '% - 3px)'; };
-  ver();
+  ver(); ajustar();
+  new ResizeObserver(ajustar).observe(marco);
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   setInterval(() => { if (i + d < 0 || i + d >= P.length) d = -d; i += d; ver(); }, 400);
 })();

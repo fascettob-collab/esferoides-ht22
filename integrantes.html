@@ -26,7 +26,6 @@
 <script>
 // Para sumar datos de alguien: completá sus campos. foto, cv y linkedin son rutas o links
 // (por ejemplo foto: 'img/integrantes/bonomo.jpg', cv: 'cv/bonomo.pdf').
-// Quien tenga al menos un dato se puede desplegar.
 const INTEGRANTES = [
   { nombre: 'Nahuel Bonomo',         foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
   { nombre: 'Bautista Fascetto',     foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
@@ -38,11 +37,6 @@ const iniciales = n => n.split(' ').slice(0, 2).map(p => p[0]).join('');
 const lista = document.getElementById('gente');
 INTEGRANTES.forEach((p, i) => {
   const foto = p.foto ? `<img class="foto" src="${esc(p.foto)}" alt="">` : `<span class="foto" aria-hidden="true">${iniciales(p.nombre)}</span>`;
-  const tieneDatos = p.descripcion || p.mail || p.cv || p.linkedin;
-  if (!tieneDatos) {
-    lista.insertAdjacentHTML('beforeend', `<div class="persona"><div class="fila-p">${foto}<b>${esc(p.nombre)}</b><span></span></div></div>`);
-    return;
-  }
   const archivo = p.nombre.split(' ').slice(-1)[0].toLowerCase();
   lista.insertAdjacentHTML('beforeend', `
     <details class="persona" name="gente">
@@ -50,6 +44,7 @@ INTEGRANTES.forEach((p, i) => {
       <div class="ficha">
         <p class="linea"><span class="pr">$</span> cat ${esc(archivo)}.txt</p>
         ${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ''}
+        ${!(p.descripcion || p.mail || p.cv || p.linkedin) ? `<p class="dim">pronto: descripción, mail, CV y LinkedIn</p>` : ''}
         ${p.mail ? `<div class="mail"><span class="dim">mail</span><span class="dir">${esc(p.mail)}</span><button class="btn btn--chico copiar" type="button">[ copiar ]</button></div>` : ''}
         ${p.cv || p.linkedin ? `<div class="enlaces">
           ${p.cv ? `<a class="btn btn--chico" href="${esc(p.cv)}" target="_blank" rel="noopener">[ ver CV ]</a>` : ''}
