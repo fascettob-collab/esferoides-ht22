@@ -73,6 +73,7 @@ pre .r { color: var(--wga); } pre .g { color: var(--gfp); } pre .b { color: var(
 .mail { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; }
 .mail .dir { color: var(--blanco); overflow-wrap: anywhere; user-select: all; }
 .enlaces { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.enlaces > :only-child { grid-column: 1 / -1; }
 .datos { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; }
 .datos dt { color: var(--tenue); } .datos dd { margin: 0; }
 

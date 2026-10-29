@@ -27,10 +27,10 @@
 // Para sumar datos de alguien: completá sus campos. foto, cv y linkedin son rutas o links
 // (por ejemplo foto: 'img/integrantes/bonomo.jpg', cv: 'cv/bonomo.pdf').
 const INTEGRANTES = [
-  { nombre: 'Nahuel Bonomo',         foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
-  { nombre: 'Bautista Fascetto',     foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
-  { nombre: 'Mauro Lucero',          foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
-  { nombre: 'Donato Cavagnaro Rago', archivo: 'cavagnaro-rago', foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
+  { nombre: 'Nahuel Bonomo',         foto: '', descripcion: '', mail: 'nahuel7496@gmail.com', cv: '', linkedin: 'https://www.linkedin.com/in/nahuel-bonomo-918807351/' },
+  { nombre: 'Bautista Fascetto',     foto: '', descripcion: '', mail: 'fascettob@gmail.com', cv: '', linkedin: 'https://www.linkedin.com/in/bautistafascetto/' },
+  { nombre: 'Mauro Lucero',          foto: '', descripcion: '', mail: 'maurolucero03@gmail.com', cv: '', linkedin: 'https://www.linkedin.com/in/mauro-lucero-17bb2120b/' },
+  { nombre: 'Donato Cavagnaro Rago', archivo: 'cavagnaro-rago', foto: '', descripcion: '', mail: 'cavagnaroragodonato@gmail.com', cv: '', linkedin: 'https://www.linkedin.com/in/donato-cavagnaro-rago-320267276/' },
 ];
 const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const iniciales = n => n.split(' ').slice(0, 2).map(p => p[0]).join('');
