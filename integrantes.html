@@ -30,14 +30,14 @@ const INTEGRANTES = [
   { nombre: 'Nahuel Bonomo',         foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
   { nombre: 'Bautista Fascetto',     foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
   { nombre: 'Mauro Lucero',          foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
-  { nombre: 'Donato Cavagnaro Rago', foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
+  { nombre: 'Donato Cavagnaro Rago', archivo: 'cavagnaro-rago', foto: '', descripcion: '', mail: '', cv: '', linkedin: '' },
 ];
 const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const iniciales = n => n.split(' ').slice(0, 2).map(p => p[0]).join('');
 const lista = document.getElementById('gente');
 INTEGRANTES.forEach((p, i) => {
   const foto = p.foto ? `<img class="foto" src="${esc(p.foto)}" alt="">` : `<span class="foto" aria-hidden="true">${iniciales(p.nombre)}</span>`;
-  const archivo = p.nombre.split(' ').slice(-1)[0].toLowerCase();
+  const archivo = p.archivo || p.nombre.split(' ').slice(-1)[0].toLowerCase();
   lista.insertAdjacentHTML('beforeend', `
     <details class="persona" name="gente">
       <summary class="fila-p">${foto}<b>${esc(p.nombre)}</b><span class="flecha" aria-hidden="true">›</span></summary>
