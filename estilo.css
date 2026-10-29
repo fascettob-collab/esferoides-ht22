@@ -129,4 +129,7 @@ input[type=range]:focus-visible { outline: 1px solid var(--azul); outline-offset
   .portada > .top { grid-area: top; } .portada > .l1 { grid-area: l1; } .portada > .marco { grid-area: marco; min-height: 0; }
   .portada > h1 { grid-area: h1; align-self: end; font-size: 16px; } .portada > .l2 { grid-area: l2; } .portada > .acc { grid-area: acc; }
 }
+/* nunca desplazamiento horizontal */
+.columna, .gente, .panel, #cargando, .ficha { overflow-x: hidden; }
+.persona b, .canal .nota, .mail .dir, .linea { min-width: 0; overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
