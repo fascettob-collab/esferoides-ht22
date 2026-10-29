@@ -1,0 +1,40 @@
+{
+ "40x": {
+  "titulo": "Esferoide transfectado 40x",
+  "dims": [
+   400,
+   400,
+   24
+  ],
+  "um_px": 0.3955,
+  "um_z": 1.0,
+  "planos": [
+   1,
+   24
+  ],
+  "canales": {
+   "dapi": "40x_dapi.bin.gz",
+   "gfp": "40x_gfp.bin.gz",
+   "wga": "40x_wga.bin.gz"
+  }
+ },
+ "10x": {
+  "titulo": "Esferoide transfectado 10x",
+  "dims": [
+   448,
+   368,
+   26
+  ],
+  "um_px": 0.6204,
+  "um_z": 2.0,
+  "planos": [
+   1,
+   26
+  ],
+  "canales": {
+   "dapi": "10x_dapi.bin.gz",
+   "gfp": "10x_gfp.bin.gz",
+   "wga": "10x_wga.bin.gz"
+  }
+ }
+}
