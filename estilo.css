@@ -57,7 +57,9 @@ pre .r { color: var(--wga); } pre .g { color: var(--gfp); } pre .b { color: var(
 .barra-z i { position: absolute; top: -2px; width: 7px; height: 7px; background: var(--azul); box-shadow: 0 0 8px var(--azul); left: 0; transition: left 180ms; }
 
 /* integrantes */
-.gente { display: grid; align-content: start; border-top: 1px solid var(--borde); flex: 0 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+/* integrantes: arriba y el botón de volver quedan fijos; la lista y los datos se desplazan juntos en el medio */
+.desplazable { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; display: flex; flex-direction: column; gap: clamp(8px, 1.7vh, 14px); }
+.gente { display: grid; align-content: start; border-top: 1px solid var(--borde); flex: none; }
 .persona { border-bottom: 1px solid var(--borde); }
 .persona .fila-p { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 11px 2px; list-style: none; }
 .persona summary { cursor: pointer; }
@@ -131,6 +133,6 @@ input[type=range]:focus-visible { outline: 1px solid var(--azul); outline-offset
   .portada > h1 { grid-area: h1; align-self: end; font-size: 16px; } .portada > .l2 { grid-area: l2; } .portada > .acc { grid-area: acc; }
 }
 /* nunca desplazamiento horizontal */
-.columna, .gente, .panel, #cargando, .ficha { overflow-x: hidden; }
+.columna, .panel, #cargando { overflow-x: hidden; }
 .persona b, .canal .nota, .mail .dir, .linea { min-width: 0; overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
