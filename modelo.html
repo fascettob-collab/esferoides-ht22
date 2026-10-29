@@ -48,8 +48,8 @@
     </label>
   </div>
   <div class="fila">
-    <label class="chico"><input type="checkbox" id="caja" checked> Mostrar caja</label>
-    <label class="chico"><input type="checkbox" id="girar"> Girar solo</label>
+    <label class="chico"><input type="checkbox" id="caja"> Mostrar caja</label>
+    <label class="chico"><input type="checkbox" id="girar" checked> Girar solo</label>
     <button id="reset" type="button">Vista inicial</button>
   </div>
   <p class="ayuda">Arrastrá para girar · pellizcá o usá la rueda para el zoom · dos dedos o clic derecho para mover.</p>
@@ -112,6 +112,7 @@ const camara = new THREE.PerspectiveCamera(35, 1, 0.01, 100);
 const controles = new OrbitControls(camara, renderer.domElement);
 controles.enableDamping = true;
 controles.autoRotateSpeed = 1.5;
+controles.autoRotate = true;
 
 const m = Math.max(...fis);
 const escala = new THREE.Vector3(fis[0] / m, fis[1] / m, fis[2] / m);
@@ -181,12 +182,13 @@ const largo = 50 / m;
 const barra = new THREE.Mesh(new THREE.BoxGeometry(largo, 0.006, 0.006), new THREE.MeshBasicMaterial({ color: 0xffffff }));
 barra.position.set(escala.x / 2 - largo / 2 - 0.02, -escala.y / 2 - 0.03, escala.z / 2);
 escena.add(barra);
+caja.visible = false;
 
 function vistaInicial() {
   // distancia para que el modelo entre entero también en pantallas angostas (celular)
   const d = 0.62 / Math.tan(THREE.MathUtils.degToRad(camara.fov / 2)) * Math.max(1, 1 / camara.aspect);
   // el 10x tiene poca resolución en z (planos cada 2 µm): arranca casi de frente, como en el microscopio
-  const dir = vid === '10x' ? [0.08, -0.12, 1.5] : [0.3, -0.45, 1.5];
+  const dir = vid === '10x' ? [-0.08, 0.12, -1.5] : [-0.3, 0.45, -1.5];  // desde el lado opuesto
   camara.position.set(...dir).normalize().multiplyScalar(d);
   camara.up.set(0, 1, 0);
   controles.target.set(0, 0, 0);
@@ -216,7 +218,7 @@ document.querySelectorAll('.canal').forEach(div => {
   chk.addEventListener('change', sync); rng.addEventListener('input', sync); sync();
 });
 document.getElementById('modo').addEventListener('change', e => uniforms.uModo.value = +e.target.value);
-document.getElementById('caja').addEventListener('change', e => { caja.visible = barra.visible = e.target.checked; });
+document.getElementById('caja').addEventListener('change', e => { caja.visible = e.target.checked; });
 document.getElementById('girar').addEventListener('change', e => controles.autoRotate = e.target.checked);
 document.getElementById('reset').addEventListener('click', vistaInicial);
 document.getElementById('plegar').addEventListener('click', () => document.getElementById('panel').classList.toggle('oculto'));
