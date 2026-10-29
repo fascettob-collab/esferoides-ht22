@@ -249,6 +249,20 @@ const largo = 50 / m;
 const barra = new THREE.Mesh(new THREE.BoxGeometry(largo, 0.006, 0.006), new THREE.MeshBasicMaterial({ color: 0xffffff }));
 barra.position.set(escala.x / 2 - largo / 2 - 0.02, -escala.y / 2 - 0.03, escala.z / 2);
 escena.add(barra);
+// etiqueta "50 µm" que siempre mira a la cámara, debajo de la barra
+const lienzoEtq = document.createElement('canvas');
+lienzoEtq.width = 256; lienzoEtq.height = 64;
+const cEtq = lienzoEtq.getContext('2d');
+cEtq.font = '600 40px "IBM Plex Mono", monospace';
+cEtq.fillStyle = '#ffffff'; cEtq.textAlign = 'center'; cEtq.textBaseline = 'middle';
+cEtq.fillText('50 µm', 128, 34);
+const texEtq = new THREE.CanvasTexture(lienzoEtq);
+texEtq.colorSpace = THREE.SRGBColorSpace;
+const etiqueta = new THREE.Sprite(new THREE.SpriteMaterial({ map: texEtq, transparent: true, depthTest: false }));
+etiqueta.scale.set(0.2, 0.05, 1);
+etiqueta.position.set(barra.position.x, barra.position.y - 0.035, barra.position.z);
+escena.add(etiqueta);
+document.fonts?.ready.then(() => { cEtq.clearRect(0, 0, 256, 64); cEtq.font = '600 40px "IBM Plex Mono", monospace'; cEtq.fillText('50 µm', 128, 34); texEtq.needsUpdate = true; });
 caja.visible = false;
 
 function vistaInicial() {
