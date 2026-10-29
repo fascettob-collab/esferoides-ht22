@@ -24,11 +24,11 @@
   </nav>
 </header>
 
-<div class="cuerpo" id="cuerpo">
+<div class="cuerpo sin-panel" id="cuerpo">
   <div class="vista">
     <div id="lienzo"></div>
     <span class="esq a" id="esq-a"></span><span class="esq b">arrastrá para girar</span><span class="esq d" id="medidas"></span>
-    <div class="plegado" id="plegado" hidden>
+    <div class="plegado" id="plegado">
       <span class="chips"><span class="t-wga" data-chip="wga">WGA</span><span class="t-gfp" data-chip="gfp">GFP</span><span class="t-dapi" data-chip="dapi">DAPI</span></span>
       <button class="btn btn--chico" id="mostrar" type="button">[ controles ]</button>
     </div>
@@ -70,7 +70,6 @@
       <button class="btn btn--chico" id="reset" type="button">[ vista inicial ]</button>
       <button class="btn btn--chico" id="ocultar" type="button">[ ocultar ]</button>
     </div>
-    <p class="ayuda">Arrastrá para girar · pellizcá o usá la rueda para el zoom · dos dedos o clic derecho para mover. La barra blanca mide 50 µm.</p>
   </aside>
 </div>
 
@@ -82,7 +81,7 @@ const params = new URLSearchParams(location.search);
 const vid = params.get('v') === '10x' ? '10x' : '40x';
 document.querySelectorAll('.pestanas a').forEach(a => { if (a.dataset.v === vid) a.setAttribute('aria-current', 'page'); });
 document.getElementById('cmd-v').textContent = vid;
-document.getElementById('esq-a').textContent = vid + (vid === '40x' ? ' · células dentro del esferoide' : ' · esferoide entero');
+document.getElementById('esq-a').textContent = vid;
 
 const info = (await (await fetch('data/volumenes.json')).json())[vid];
 const [nx, ny, nz] = info.dims;
@@ -253,7 +252,7 @@ caja.visible = false;
 
 function vistaInicial() {
   // distancia para que el modelo entre entero también en pantallas angostas (celular)
-  const d = 0.62 / Math.tan(THREE.MathUtils.degToRad(camara.fov / 2)) * Math.max(1, 1 / camara.aspect);
+  const d = 0.5 / Math.tan(THREE.MathUtils.degToRad(camara.fov / 2)) * Math.max(1, 1 / camara.aspect);
   // el 10x tiene poca resolución en z (planos cada 2 µm): arranca casi de frente, como en el microscopio
   const dir = vid === '10x' ? [-0.08, 0.12, -1.5] : [-0.3, 0.45, -1.5];  // desde el lado opuesto
   camara.position.set(...dir).normalize().multiplyScalar(d);
